@@ -1,0 +1,17 @@
+{
+  "name": "purple-planet-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.5.4",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "mongodb": "^3.2.3",
+    "mongoose": "^5.4.22",
+    "mongoose-schema-extend": "^0.2.2",
+    "request": "^2.88.0"
+  }
+}
