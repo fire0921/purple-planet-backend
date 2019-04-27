@@ -3,8 +3,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 
-
-//教學網址 ：http://www.runoob.com/nodejs/nodejs-express-framework.html
 app.use(express.static("public"));
 app.use(bodyParser.json({
 	limit: "50mb"
