@@ -2,6 +2,7 @@ const login_api_controller = require("./controllers/login.js");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
+const parseurl = require("parseurl")
 
 app.use(express.static("public"));
 app.use(bodyParser.json({
@@ -14,6 +15,7 @@ app.use((req, res, next) => {
 	res.append("Access-Control-Allow-Headers", "Content-Type");
 	next();
 });
+
 app.get("/", (req, res) => {
 	res.send("good");
 });
