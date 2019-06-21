@@ -4,6 +4,7 @@ const url = "mongodb://localhost:27017/test";
 const jwt = require("jsonwebtoken");
 
 exports.login_api_controller = function(req, res){
+	console.log(req.session);
 	if(req.body.__token){
 		let API_KEYS = "TIMprojectSecrect";
 	}else{
@@ -11,7 +12,9 @@ exports.login_api_controller = function(req, res){
 	}
 	jwt.verify(req.body.ctoken, API_KEYS, function(err, decoded) {
 		if(err){
-			console.log(err.message);
+			console.log("err", err.message);
+			res.status(500).send("please input email/password");
+
 		}else{
 			console.log(decoded); // bar
 			let phone = decoded.phone;
@@ -39,18 +42,32 @@ exports.login_api_controller = function(req, res){
 							Password:msg.password,
 						}
 						JWTtoken = jwt.sign(payload, "TIMprojectSecrect", { expiresIn: "1 day" });
-						res.json({ __token:JWTtoken });
+						req.session.JWTtoken = { "JWTtoken": JWTtoken };
+						console.log(req.session);
+						res.json({
+							__token:JWTtoken,
+							user: req.session.JWTtoken,
+						});
 					}else {
 						client.close();
-						res.json({status:"No result!!"});
+						res.status(200).json({status:"No result!!"});
 					}
 				}).catch((err) => {
-					throw err;
+					res.status(500).send("please input email/password");
+					console.log("err", err);
 				}).then(() => {
 					client.close();
 				});
 			});
-
 		}
 	});
 };
+exports.check_user_status = function(req, res){
+	console.log(req.session);
+	if(req.session.JWTtoken){
+		console.log(req.session.JWTtoken);
+		res.status(200).json({ status:"success" });
+	}else{
+		res.status(200).json({ status: "Error" });
+	}
+}
