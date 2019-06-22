@@ -4,7 +4,6 @@ const url = "mongodb://localhost:27017/test";
 const jwt = require("jsonwebtoken");
 
 exports.login_api_controller = function(req, res){
-	console.log(req.session);
 	if(req.body.__token){
 		let API_KEYS = "TIMprojectSecrect";
 	}else{
@@ -16,7 +15,6 @@ exports.login_api_controller = function(req, res){
 			res.status(500).send("please input email/password");
 
 		}else{
-			console.log(decoded); // bar
 			let phone = decoded.phone;
 			let Password = decoded.Password;
 
@@ -35,7 +33,6 @@ exports.login_api_controller = function(req, res){
 						reject(err);
 					}
 				}).then((msg) => {
-					console.log(msg);
 					if(msg && Password === msg.password){
 						let payload = {
 							phone:msg.phone,
@@ -43,7 +40,6 @@ exports.login_api_controller = function(req, res){
 						}
 						JWTtoken = jwt.sign(payload, "TIMprojectSecrect", { expiresIn: "1 day" });
 						req.session.JWTtoken = { "JWTtoken": JWTtoken };
-						console.log(req.session);
 						res.json({
 							__token:JWTtoken,
 							user: req.session.JWTtoken,
@@ -63,9 +59,7 @@ exports.login_api_controller = function(req, res){
 	});
 };
 exports.check_user_status = function(req, res){
-	console.log(req.session);
 	if(req.session.JWTtoken){
-		console.log(req.session.JWTtoken);
 		res.status(200).json({ status:"success" });
 	}else{
 		res.status(200).json({ status: "Error" });
