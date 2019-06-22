@@ -2,14 +2,12 @@ const MongoClient = require("mongodb").MongoClient;
 // const ObjectId = require("mongodb").ObjectId;
 const url = "mongodb://localhost:27017/test";
 const jwt = require("jsonwebtoken");
+const API_KEYS = "TIMprojectSecrect";
+const API_KEYS_Client = "ClentSecrectKeys";
 
 exports.login_api_controller = function(req, res){
-	if(req.body.__token){
-		let API_KEYS = "TIMprojectSecrect";
-	}else{
-		API_KEYS = "ClentSecrectKeys";
-	}
-	jwt.verify(req.body.ctoken, API_KEYS, function(err, decoded) {
+
+	jwt.verify(req.body.ctoken, API_KEYS_Client, function(err, decoded) {
 		if(err){
 			console.log("err", err.message);
 			res.status(500).send("please input email/password");
@@ -38,8 +36,8 @@ exports.login_api_controller = function(req, res){
 							phone:msg.phone,
 							Password:msg.password,
 						}
-						JWTtoken = jwt.sign(payload, "TIMprojectSecrect", { expiresIn: "1 day" });
-						req.session.JWTtoken = { "JWTtoken": JWTtoken };
+						JWTtoken = jwt.sign(payload, API_KEYS, { expiresIn: "1 day" });
+						req.session.JWTtoken = JWTtoken;
 						res.json({
 							__token:JWTtoken,
 							user: req.session.JWTtoken,
@@ -59,9 +57,18 @@ exports.login_api_controller = function(req, res){
 	});
 };
 exports.check_user_status = function(req, res){
-	if(req.session.JWTtoken){
-		res.status(200).json({ status:"success" });
+	const token = req.session.JWTtoken;
+	if(token){
+		console.log("has token");
+		jwt.verify(token, API_KEYS, function(err, decoded){
+			if(err)	{
+				return res.status(500).json({ status: err.message });
+			}else {
+				return res.status(200).json({ status:"success" });
+			}
+		})
 	}else{
-		res.status(200).json({ status: "Error" });
+		console.log("first login");
+		return res.status(200).json({ status: "Error" });
 	}
 }
