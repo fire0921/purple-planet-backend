@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.static("public"));
 
 app.use((req, res, next) => {
-	const allowedOrigins = ["http://192.168.43.39:5000", "http://localhost:5000", "https://localhost:5000"];
+	const allowedOrigins = ["https://192.168.43.39:5000", "http://localhost:5000", "https://localhost:5000"];
 	const origin = req.headers.origin;
 	if(allowedOrigins.indexOf(origin) > -1){
        res.setHeader('Access-Control-Allow-Origin', origin);
