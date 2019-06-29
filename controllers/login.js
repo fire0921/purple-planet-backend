@@ -107,7 +107,7 @@ exports.check_user_status = async function(req, res){
 
 		response = await request({
 			method: "GET",
-			uri: fbapi_host+"/oauth/access_token?grant_type=client_credentials&client_id="+"308963306466048"+"&client_secret="+"83793303713b1141a8945f4fad6dcf6d",
+			uri: fbapi_host+"/oauth/access_token?grant_type=client_credentials&client_id="+process.env.REACT_APP_FBID+"&client_secret="+process.env.REACT_APP_FBS,
 			json: true
 		}).catch((err) => {console.log(err.message)});
 
