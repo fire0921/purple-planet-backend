@@ -65,7 +65,6 @@ exports.login_api_controller = async function(req, res){
 };
 exports.login_fb_api_controller = async function(req, res){
 	const access_token = req.body.accessToken;
-
 	const response = await request({
 		method: "GET",
 		url: fbapi_host + "/me?fields=id,name,email&access_token=" + access_token,
@@ -118,7 +117,13 @@ exports.check_user_status = async function(req, res){
 			uri: "https://graph.facebook.com/debug_token?input_token="+token+"&access_token="+credentitals,
 			json:true,
 		}).catch((err) => {console.log(err.message)});
-		console.log(response);
+		
+		/*res4 = await request({
+			method: "GET",
+			uri: "https://graph.facebook.com/oauth/client_code?access_token="+token+"&client_secret="+process.env.REACT_APP_FBS+"&redirect_uri=https://localhost:5000/login&client_id="+process.env.REACT_APP_FBID,
+			json: true,
+		})*/
+
 		if(response.data.is_valid){
 			return res.status(200).json({status:"success"});
 		}else{
