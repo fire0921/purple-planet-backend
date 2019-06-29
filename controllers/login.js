@@ -7,6 +7,8 @@ const API_KEYS = "TIMprojectSecrect";
 const API_KEYS_Client = "ClentSecrectKeys";
 const fbapi_host = "https://graph.facebook.com/v3.3";
 
+require("dotenv").config();
+
 exports.login_api_controller = async function(req, res){
 
 	jwt.verify(req.body.ctoken, API_KEYS_Client, function(err, decoded) {
@@ -63,7 +65,6 @@ exports.login_api_controller = async function(req, res){
 };
 exports.login_fb_api_controller = async function(req, res){
 	const access_token = req.body.accessToken;
-	console.log(access_token);
 
 	const response = await request({
 		method: "GET",
@@ -73,7 +74,7 @@ exports.login_fb_api_controller = async function(req, res){
 
 	const res2 = await request({
 			method: "GET",
-			uri: fbapi_host+"/oauth/access_token?grant_type=fb_exchange_token&client_id="+process.env.FBID+"&client_secret="+process.env.FBS+"&fb_exchange_token="+access_token,
+			uri: fbapi_host+"/oauth/access_token?grant_type=fb_exchange_token&client_id="+process.env.REACT_APP_FBID+"&client_secret="+process.env.REACT_APP_FBS+"&fb_exchange_token="+access_token,
 			json: true
 		});
 
