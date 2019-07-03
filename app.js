@@ -9,7 +9,7 @@ const check_user_status = require("./controllers/login.js").check_user_status;
 const app = express();
 const parseurl = require("parseurl");
 
-const wrap = fn => (...args) => fn(...args).catch(args[2]);
+const wrap = fn => ((...args) => { fn(...args).catch(args[2]); });
 
 app.use(cookieParser("express_react_cookie"));
 app.use(session({
